@@ -6,3 +6,5 @@ Builds on top of https://github.com/porjo/youtubeuploader by adding means to aut
 The purpose of this script is to automate a number of steps involved with uploading routine youtube videos. The videos can be staged with their metadata and then scheduled to run later via cron when network demand is low.
 
 This is currently NOT ready for distribution. The script meets my needs but the goal is to eventually make it more flexible and configurable for others.
+
+If you have any ideas or requests, please open an issue and I'll do my best to manage them.
