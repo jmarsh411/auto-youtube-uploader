@@ -8,8 +8,7 @@ log_file="$HOME/yt_upload_log.txt"
 meta_fname='meta.txt'
 
 # TODO:
-# - add support for tags
-# - add support for category (and remove it from here)
+# - add support for the filename to be inserted into the title
 # - put program defaults in a default file that is sourced
 # - allow a user config file to be sourced after defaults
 # - send all output to a temp file and copy it to a permanent location only if
@@ -18,13 +17,14 @@ meta_fname='meta.txt'
 
 
 # UPLOAD_VARS
-def_categ='20'  # Gaming
 
 upload_dir()
 {
     local workdir="$1"
     local title="$2"
     local description="$3"
+    local tags="$4"
+    local category_id="$5"
     cd "$workdir"
     # read meta file
     if [ -f "$meta_fname" ]
@@ -39,9 +39,10 @@ upload_dir()
             -cache "$bin_dir/request.token" \
             -secrets "$bin_dir/client_secrets.json" \
             -filename "$vid" \
-            -categoryId "$def_categ" \
+            -categoryId "$category_id" \
             -title "$title" \
             -description "$description" \
+            -tags "$tags" \
             >> "$log_file" \
         && rm "$vid"
     done
@@ -49,7 +50,7 @@ upload_dir()
     find . -mindepth 1 -maxdepth 1 -type d ! -name . |
     while read dir
     do
-        upload_dir "$dir" "$title" "$description"
+        upload_dir "$dir" "$title" "$description" "$tags" "$category_id"
     done
     cd "$OLDPWD"
 }
@@ -59,8 +60,7 @@ upload_dir()
 echo  "Upload script started $(date)" >> "$log_file"
 (
     flock -n 200 || exit 1
-    echo "Uploading started $(date)" >> "$log_file"
     upload_dir "$in_dir"
     rm "$yt_lock_file"
 ) 200>"$yt_lock_file"
-echo  "Uploading finished $(date)" >> "$log_file"
+echo  "Upload script finished $(date)" >> "$log_file"
