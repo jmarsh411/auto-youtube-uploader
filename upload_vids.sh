@@ -9,6 +9,8 @@ meta_fname='meta.txt'
 
 # TODO:
 # - add support for the filename to be inserted into the title
+# - add thumbnail support to upload_dir
+# - add token and secrets support to upload_dir
 # - put program defaults in a default file that is sourced
 # - allow a user config file to be sourced after defaults
 # - send all output to a temp file and copy it to a permanent location only if
